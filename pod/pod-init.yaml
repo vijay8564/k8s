@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-hello-world
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: shared-data
+      mountPath: /usr/share/nginx/html
+  initContainers:
+  - name: init-script
+    image: busybox:latest
+    command: ['sh', '-c', 'echo "Hello World" > /mnt/index.html']
+    volumeMounts:
+    - name: shared-data
+      mountPath: /mnt
+  volumes:
+  - name: shared-data
+    emptyDir: {}
